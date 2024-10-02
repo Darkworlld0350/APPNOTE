@@ -1,25 +1,10 @@
 import React from 'react';
-import { NotesProvider } from './contexts/NotesContext';
-import AppBar from './components/AppBar';
-import AddNote from './components/AddNote';  // Importar el botón
-import NotesPanel from './components/NotesPanel';  // Importar el panel de notas
+import ReactDOM from 'react-dom/client';
+import App from './App';  // Asegúrate de que la ruta sea correcta
 
 
-
-const App: React.FC = () => (
-  <NotesProvider>
-  <div>
-    <AppBar />
-    <AddNote note={{
-        title: '',
-        content: '',
-        category: undefined,
-        tags: undefined
-      }} /> 
-    <NotesPanel />
-    {/* Aquí agregarás los demás componentes de la aplicación */}
-  </div>
-  </NotesProvider>
-);
-
-export default App;
+ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+  );
