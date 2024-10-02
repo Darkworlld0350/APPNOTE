@@ -1,17 +1,20 @@
 import React from 'react';
 import { NotesProvider } from './contexts/NotesContext';
 import AppBar from './components/AppBar';
-import NotesPanel from './components/NotesPanel';  // Importar el panel de notas
-import './index.css'; // O el archivo de estilos que estés utilizando
+import NotesPanel from './components/NotesPanel';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import './index.css'; // Importar archivo de estilos
 
 const App: React.FC = () => (
-  <NotesProvider>
-    <div>
-      <AppBar />
-      <NotesPanel />
-      {/* Aquí no es necesario agregar AddNote ni Note, ya que se gestionan dentro de NotesPanel */}
-    </div>
-  </NotesProvider>
+  <DndProvider backend={HTML5Backend}>
+    <NotesProvider>
+      <div>
+        <AppBar />
+        <NotesPanel />
+      </div>
+    </NotesProvider>
+  </DndProvider>
 );
 
 export default App;

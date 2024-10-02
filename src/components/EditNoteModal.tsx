@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { Note } from '../contexts/NotesContext';  // Importamos el tipo de la nota
+import { Note, NotesContext } from '../contexts/NotesContext';  // Importamos el tipo de la nota
 
 // Estilos para el modal y los inputs
 const ModalBackground = styled.div`
@@ -69,16 +69,24 @@ const Button = styled.button`
 interface EditNoteModalProps {
   note: Note;
   onClose: () => void;
-  onSave: (updatedNote: { title: string; content: string }) => void;
 }
 
-const EditNoteModal: React.FC<EditNoteModalProps> = ({ note, onClose, onSave }) => {
+const EditNoteModal: React.FC<EditNoteModalProps> = ({ note, onClose }) => {
+  const { dispatch } = useContext( NotesContext);
   const [title, setTitle] = useState(note.title);  // Estado local para el título
   const [content, setContent] = useState(note.content);  // Estado local para el contenido
+  const [category] = useState('');
+  const [tags] = useState<string[]>([]);
 
   // Función que se ejecuta cuando el usuario hace clic en "Guardar"
   const handleSave = () => {
-    onSave({ title, content });
+    if (title && content) {
+      dispatch({
+        type: 'ADD_NOTE',
+        payload: { id: Date.now(), title, content, category, tags }
+      });
+      onClose();
+    }
   };
 
   return (

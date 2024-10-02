@@ -2,14 +2,13 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import { useDrag } from 'react-dnd';
+import { Note } from '../contexts/NotesContext';
 
 interface NoteProps {
-  note: {
-    title: string;
-    content: string;
-    category?: string;
-    tags?: string[];
-  };
+  note: Note;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
 const NoteContainer = styled.div`
@@ -20,43 +19,28 @@ const NoteContainer = styled.div`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
-const NoteTitle = styled.h3`
-  font-weight: 500;
-  margin-bottom: 10px;
-`;
-
-const NoteContent = styled.p`
-  font-weight: 400;
-  font-size: 14px;
-  color: #333;
-`;
-
-const NoteCategory = styled.p`
-  font-weight: 400;
-  font-size: 12px;
-  color: #666;
-`;
-
-const NoteTags = styled.div`
-  margin-top: 10px;
-  font-size: 12px;
-  color: #999;
-`;
-
-const Note: React.FC<NoteProps> = ({ note }) => {
-  const randomPastelColor = () => {
-    const pastelColors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF'];
-    return pastelColors[Math.floor(Math.random() * pastelColors.length)];
-  };
+const NoteComponent: React.FC<NoteProps> = ({ note, onEdit, onDelete }) => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'NOTE',
+    item: { id: note.id },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
 
   return (
-    <NoteContainer color={randomPastelColor()}>
-      <NoteTitle>{note.title}</NoteTitle>
-      <NoteContent>{note.content}</NoteContent>
-      {note.category && <NoteCategory>Categoría: {note.category}</NoteCategory>}
-      {note.tags && <NoteTags>Etiquetas: {note.tags.join(', ')}</NoteTags>}
+    <NoteContainer
+      ref={drag}
+      style={{ opacity: isDragging ? 0.5 : 1 }} // Cambiar la opacidad al arrastrar
+    >
+      <h3>{note.title}</h3>
+      <p>{note.content}</p>
+      {note.category && <p>Categoría: {note.category}</p>}
+      {note.tags && <p>Etiquetas: {note.tags.join(', ')}</p>}
+      <button onClick={onEdit}>Editar</button>
+      <button onClick={onDelete}>Eliminar</button>
     </NoteContainer>
   );
 };
 
-export default Note;
+export default NoteComponent;

@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useReducer, ReactNode, useEffect } from 'react';
 
 // Definir los tipos de acciones
 type Action =
@@ -15,8 +15,18 @@ export type Note = {
   tags?: string[];
 };
 
+const loadNotesFromLocalStorage = (): Note[] => {
+  try {
+    const notes = localStorage.getItem('notes');
+    return notes ? JSON.parse(notes) : [];
+  } catch (error) {
+    console.error('Error cargando las notas desde localStorage', error);
+    return [];
+  }
+};
+
 // Estado inicial
-const initialState: Note[] = [];
+const initialState: Note[] = loadNotesFromLocalStorage();
 
 // Reducer para manejar el estado de las notas
 const notesReducer = (state: Note[], action: Action): Note[] => {
@@ -46,6 +56,15 @@ export const NotesContext = createContext<{
 // Proveedor de contexto
 export const NotesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [notes, dispatch] = useReducer(notesReducer, initialState);
+
+// Guardar las notas en localStorage cada vez que cambien
+useEffect(() => {
+  try {
+    localStorage.setItem('notes', JSON.stringify(notes));
+  } catch (error) {
+    console.error('Error guardando las notas en localStorage', error);
+  }
+}, [notes]);
 
   return (
     <NotesContext.Provider value={{ notes, dispatch }}>
