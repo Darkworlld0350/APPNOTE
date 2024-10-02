@@ -1,12 +1,12 @@
 // src/components/AddNoteModal.tsx
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
+import { NotesContext } from '../contexts/NotesContext';
 
 interface AddNoteModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (note: { title: string; content: string; category?: string; tags?: string[] }) => void;
 }
 
 const ModalOverlay = styled.div`
@@ -53,15 +53,21 @@ const ModalButton = styled.button`
   }
 `;
 
-const AddNoteModal: React.FC<AddNoteModalProps> = ({ isOpen, onClose, onSave }) => {
+const AddNoteModal: React.FC<AddNoteModalProps> = ({ isOpen, onClose }) => {
+  const { dispatch } = useContext( NotesContext);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('');
   const [tags, setTags] = useState<string[]>([]);
 
   const handleSave = () => {
-    onSave({ title, content, category, tags });
-    resetForm();
+    if (title && content) {
+      dispatch({
+        type: 'ADD_NOTE',
+        payload: { id: Date.now(), title, content, category, tags }
+      });
+      onClose();
+    }
   };
 
   const resetForm = () => {
