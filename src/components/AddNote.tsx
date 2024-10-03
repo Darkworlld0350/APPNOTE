@@ -1,25 +1,11 @@
-// src/components/AddNote.tsx
 import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
 import { NotesContext } from '../contexts/NotesContext'; // Asegúrate de la ruta correcta
+import '../styles.css/AddNote.css'; // Importar el archivo CSS
 
 interface AddNoteProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-// Definir los estilos del Modal
-const Modal = styled.div<{ isOpen: boolean }>`
-  display: ${(props) => (props.isOpen ? 'block' : 'none')};
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-`;
 
 const AddNote: React.FC<AddNoteProps> = ({ isOpen, onClose }) => {
   const { dispatch } = useContext(NotesContext);
@@ -27,17 +13,36 @@ const AddNote: React.FC<AddNoteProps> = ({ isOpen, onClose }) => {
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('');
   const [tags, setTags] = useState<string[]>([]);
+  const [error, setError] = useState(''); // Estado para el mensaje de error
 
-  const handleSave = () => {
-    if (title && content) {
-      dispatch({
-        type: 'ADD_NOTE',
-        payload: { id: Date.now(), title, content, category, tags }
-      });
-      onClose();
-    }
+  // Función para obtener un color pastel aleatorio
+  const getRandomPastelColor = () => {
+    const pastelColors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF'];
+    return pastelColors[Math.floor(Math.random() * pastelColors.length)];
   };
 
+  const handleSave = () => {
+    if (!title.trim() || !content.trim()) {
+      setError('El título y el contenido son obligatorios.'); // Mostrar mensaje de error
+      return;
+    }
+
+    setError(''); // Limpiar el error si todo es válido
+
+    dispatch({
+      type: 'ADD_NOTE',
+      payload: { 
+        id: Date.now(), 
+        title, 
+        content, 
+        category, 
+        tags,
+        color: getRandomPastelColor() // Asignar un color aleatorio a la nota
+      }
+    });
+    onClose();
+  };
+  
   const handleTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const tagString = e.target.value;
     const tagArray = tagString.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
@@ -45,7 +50,8 @@ const AddNote: React.FC<AddNoteProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Modal isOpen={isOpen}>
+    <div className={`modal ${isOpen ? 'open' : ''}`}>
+      {error && <p className="error-message">{error}</p>}
       <h2>Agregar Nota</h2>
       <input
         type="text"
@@ -74,7 +80,7 @@ const AddNote: React.FC<AddNoteProps> = ({ isOpen, onClose }) => {
       />
       <button onClick={handleSave}>Guardar</button>
       <button onClick={onClose}>Cancelar</button>
-    </Modal>
+    </div>
   );
 };
 

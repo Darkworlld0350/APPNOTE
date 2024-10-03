@@ -1,118 +1,62 @@
-// src/components/AddNoteModal.tsx
-
 import React, { useContext, useState } from 'react';
-import styled from 'styled-components';
-import { NotesContext } from '../contexts/NotesContext';
+import { Note, NotesContext } from '../contexts/NotesContext';  // Importamos el tipo de la nota
+import './EditNoteModal.css'; // Importar el archivo CSS
 
-interface AddNoteModalProps {
-  isOpen: boolean;
+// Definimos las props del modal
+interface EditNoteModalProps {
+  note: Note;
   onClose: () => void;
 }
 
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+const EditNoteModal: React.FC<EditNoteModalProps> = ({ note, onClose }) => {
+  const { dispatch } = useContext(NotesContext);
+  const [title, setTitle] = useState(note.title);  // Estado local para el título
+  const [content, setContent] = useState(note.content);  // Estado local para el contenido
+  const [category] = useState(note.category || ''); // Mantener la categoría original si existe
+  const [tags] = useState<string[]>(note.tags || []); // Mantener las etiquetas originales si existen
 
-const ModalContainer = styled.div`
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  width: 400px;
-`;
-
-const ModalTitle = styled.h2`
-  margin: 0 0 20px 0;
-`;
-
-const ModalInput = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-`;
-
-const ModalButton = styled.button`
-  padding: 10px 15px;
-  background: #5cb85c;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-
-  &:hover {
-    background: #4cae4c;
-  }
-`;
-
-const AddNoteModal: React.FC<AddNoteModalProps> = ({ isOpen, onClose }) => {
-  const { dispatch } = useContext( NotesContext);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [category, setCategory] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
-
+  // Función que se ejecuta cuando el usuario hace clic en "Guardar"
   const handleSave = () => {
     if (title && content) {
       dispatch({
         type: 'ADD_NOTE',
-        payload: { id: Date.now(), title, content, category, tags }
+        payload: { 
+          id: note.id, // Mantenemos el ID original
+          title, 
+          content, 
+          category, 
+          tags,
+          color: note.color // Mantener el color original de la nota
+        }
       });
       onClose();
     }
   };
 
-  const resetForm = () => {
-    setTitle('');
-    setContent('');
-    setCategory('');
-    setTags([]);
-    onClose();
-  };
-
-  if (!isOpen) return null;
-
   return (
-    <ModalOverlay>
-      <ModalContainer>
-        <ModalTitle>Agregar Nota</ModalTitle>
-        <ModalInput
-          type="text"
-          placeholder="Título"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+    <div className="modal-background">
+      <div className="modal-content">
+        <h2>Editar Nota</h2>
+        <input 
+          type="text" 
+          value={title} 
+          onChange={(e) => setTitle(e.target.value)} 
+          placeholder="Título de la nota" 
+          className="input"
         />
-        <ModalInput
-          type="text"
-          placeholder="Contenido"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+        <textarea 
+          value={content} 
+          onChange={(e) => setContent(e.target.value)} 
+          placeholder="Contenido de la nota" 
+          className="textarea"
         />
-        <ModalInput
-          type="text"
-          placeholder="Categoría (opcional)"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
-        <ModalInput
-          type="text"
-          placeholder="Etiquetas (opcional, separadas por comas)"
-          value={tags.join(', ')}
-          onChange={(e) => setTags(e.target.value.split(',').map(tag => tag.trim()))}
-        />
-        <ModalButton onClick={handleSave}>Guardar</ModalButton>
-        <ModalButton onClick={resetForm}>Cancelar</ModalButton>
-      </ModalContainer>
-    </ModalOverlay>
+        <div className="button-group">
+          <button onClick={handleSave} className="button">Guardar</button>
+          <button onClick={onClose} className="button cancel">Cancelar</button>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default AddNoteModal;
+export default EditNoteModal;

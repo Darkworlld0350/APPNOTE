@@ -1,0 +1,20 @@
+  /* Estilo para el contenedor del AppBar */
+.app-bar-container {
+  background-color: #a5d8ff; /* Color pastel */
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  margin: 0;
+}
+
+/* Estilo para el título */
+.app-bar-title {
+  font-weight: 700; /* Bold para el título */
+  margin: 0;
+}
+
+/* Estilo para el subtítulo */
+.app-bar-subtitle {
+  font-weight: 400; /* Regular para el subtítulo */
+  margin: 0;
+}

@@ -1,0 +1,22 @@
+.note-container {
+    width: 150px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .note-container .note-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  
+  .note-container .note-content {
+    margin-bottom: 10px;
+  }
+  
+  .note-container .note-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  

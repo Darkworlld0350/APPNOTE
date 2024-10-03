@@ -1,12 +1,11 @@
-// src/components/NotesPanel.tsx
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Note, NotesContext } from '../contexts/NotesContext';
 import AddNote from './AddNote';
 import EditNote from './EditNote';
 import NoteComponents from './Note';
-import { DndProvider, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend'; 
+import { useDrop } from 'react-dnd'; // Importar `useDrop` de `react-dnd`
+import { AnimatePresence } from 'framer-motion'; // Importar AnimatePresence
 
 
 const PanelContainer = styled.div`
@@ -34,8 +33,8 @@ const NotesPanel: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [noteToEdit, setNoteToEdit] = useState<Note | null>(null);
-  const [searchTerm, setSearchTerm] = useState ('');
-  const [selectedCategory, setSelectedCategory] = useState(''); 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const handleEdit = (note: Note) => {
     setNoteToEdit(note);
@@ -59,17 +58,20 @@ const NotesPanel: React.FC = () => {
 
   // Filtrar notas según la búsqueda y la categoría seleccionada
   const filteredNotes = notes.filter(note => {
-    const matchesSearch = 
-      note.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const matchesSearch =
+      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       note.content.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory ? note.category === selectedCategory : true;
     return matchesSearch && matchesCategory;
   });
 
+  // Configurar el "drop" para recibir notas
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'NOTE',
-    drop: () => {
-      // Lógica adicional cuando se suelte un ítem
+    drop: (item: { id: number }) => {
+      console.log('Note dropped:', item.id);
+      // Lógica para manejar el "drop" de la nota
+      // Aquí puedes actualizar el estado de la nota si es necesario
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
@@ -77,26 +79,24 @@ const NotesPanel: React.FC = () => {
   }));
 
   return (
-    <DndProvider backend={HTML5Backend}>
-    <PanelContainer ref={drop} style={{ backgroundColor: isOver ? '#f0f0f0' : 'white' }}>
+    <PanelContainer ref={drop} style={{ backgroundColor: isOver ? '#DEE5D4' : 'rgb(222, 229, 212)' }}>
       <AddNoteButton onClick={() => setIsModalOpen(true)}>Agregar Nota</AddNoteButton>
 
-
       {/* Cuadro de búsqueda y filtro de categoría */}
-       <FilterContainer>
-          <input
-            type="text"
-            placeholder="Buscar notas..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-          <select value={selectedCategory} onChange={handleCategoryChange}>
-            <option value="">Todas las categorías</option>
-            {Array.from(new Set(notes.map(note => note.category))).map(category => (
-              category && <option key={category} value={category}>{category}</option>
-            ))}
-          </select>
-        </FilterContainer> 
+      <FilterContainer>
+        <input
+          type="text"
+          placeholder="Buscar notas..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+        <select value={selectedCategory} onChange={handleCategoryChange}>
+          <option value="">Todas las categorías</option>
+          {Array.from(new Set(notes.map(note => note.category))).map(category => (
+            category && <option key={category} value={category}>{category}</option>
+          ))}
+        </select>
+      </FilterContainer>
 
       {/* Modal para agregar nota */}
       <AddNote isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
@@ -111,18 +111,18 @@ const NotesPanel: React.FC = () => {
       )}
 
       {/* Mostrar las notas */}
-      {filteredNotes.map((note) => (
-        <NoteComponents 
-        key={note.id} 
-        note={note} 
-        onEdit={() => handleEdit(note)}
-        onDelete={() => handleDelete(note.id)} 
-        />
-      ))}
+      <AnimatePresence>
+        {filteredNotes.map((note) => (
+          <NoteComponents
+            key={note.id}
+            note={note}
+            onEdit={() => handleEdit(note)}
+            onDelete={() => handleDelete(note.id)}
+          />
+        ))}
+      </AnimatePresence>
     </PanelContainer>
-  </DndProvider>  
   );
 };
 
 export default NotesPanel;
-
