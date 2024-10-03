@@ -1,0 +1,22 @@
+/* Contenedor del panel principal de notas */
+.panel-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* Estilo para cada nota */
+  .note-container {
+    background-color: #ffebb7;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+  }
+  
+  /* Hover efecto para las notas */
+  .note-container:hover {
+    transform: translateY(-5px);
+  }
+  

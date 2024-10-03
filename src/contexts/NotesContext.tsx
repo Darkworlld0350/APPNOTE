@@ -14,6 +14,7 @@ export type Note = {
   content: string;
   category?: string;
   tags?: string[];
+  position: { x: number; y: number };
 };
 
 // Estado inicial (ahora vacío)

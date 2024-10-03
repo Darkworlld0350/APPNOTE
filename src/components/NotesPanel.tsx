@@ -1,32 +1,11 @@
 import React, { useContext, useState } from 'react';
-import styled from 'styled-components';
+import '../styles/NotesPanel.css'; // Importar el archivo CSS
 import { Note, NotesContext } from '../contexts/NotesContext';
 import AddNote from './AddNote';
 import EditNote from './EditNote';
 import NoteComponents from './Note';
-import { useDrop } from 'react-dnd'; // Importar `useDrop` de `react-dnd`
-import { AnimatePresence } from 'framer-motion'; // Importar AnimatePresence
-
-
-const PanelContainer = styled.div`
-  padding: 20px;
-`;
-
-const AddNoteButton = styled.button`
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 20px;
-`;
-
-const FilterContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-`;
+import Collection from './Collection'; // Importar el componente de colección
+import { AnimatePresence } from 'framer-motion';
 
 const NotesPanel: React.FC = () => {
   const { notes, dispatch } = useContext(NotesContext);
@@ -65,25 +44,17 @@ const NotesPanel: React.FC = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // Configurar el "drop" para recibir notas
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: 'NOTE',
-    drop: (item: { id: number }) => {
-      console.log('Note dropped:', item.id);
-      // Lógica para manejar el "drop" de la nota
-      // Aquí puedes actualizar el estado de la nota si es necesario
-    },
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  }));
-
   return (
-    <PanelContainer ref={drop} style={{ backgroundColor: isOver ? '#DEE5D4' : 'rgb(222, 229, 212)' }}>
-      <AddNoteButton onClick={() => setIsModalOpen(true)}>Agregar Nota</AddNoteButton>
+    <div className="panel-container">
+      {/* Contenedor del botón, alineado a la derecha */}
+      <div className="add-note-container">
+        <button className="add-note-button" onClick={() => setIsModalOpen(true)}>
+          Agregar Nota
+        </button>
+      </div>
 
       {/* Cuadro de búsqueda y filtro de categoría */}
-      <FilterContainer>
+      <div className="filter-container">
         <input
           type="text"
           placeholder="Buscar notas..."
@@ -96,7 +67,7 @@ const NotesPanel: React.FC = () => {
             category && <option key={category} value={category}>{category}</option>
           ))}
         </select>
-      </FilterContainer>
+      </div>
 
       {/* Modal para agregar nota */}
       <AddNote isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
@@ -121,7 +92,15 @@ const NotesPanel: React.FC = () => {
           />
         ))}
       </AnimatePresence>
-    </PanelContainer>
+
+      {/* Mostrar la colección */}
+      <Collection
+        notes={filteredNotes.slice(0, 5)} // Pasar las notas a la colección
+        title="Mi Colección"
+        onDelete={() => console.log('Eliminar colección')}
+        onOpen={() => console.log('Abrir colección')}
+      />
+    </div>
   );
 };
 

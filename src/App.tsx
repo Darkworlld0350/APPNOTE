@@ -4,7 +4,7 @@ import AppBar from './components/AppBar';
 import NotesPanel from './components/NotesPanel';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import './index.css'; // Importar archivo de estilos
+import './App.css'; // Importar archivo de estilos
 
 const App: React.FC = () => (
   <DndProvider backend={HTML5Backend}>

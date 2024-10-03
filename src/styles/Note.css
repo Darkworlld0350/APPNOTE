@@ -1,0 +1,41 @@
+.note-container {
+  width: 100%; /* Dejar que Rnd controle el tamaño */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative; /* Para que los botones se ubiquen correctamente */
+  transition: background-color 0.3s ease; /* Animación para el cambio de color */
+}
+
+.note-title {
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+.note-content {
+  margin-bottom: 0.5em;
+}
+
+.note-category,
+.note-tags {
+  margin-bottom: 0.5em;
+}
+
+.note-buttons {
+  display: flex;
+  gap: 0.5em;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.note-buttons button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.note-buttons button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}

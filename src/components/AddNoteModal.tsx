@@ -1,62 +1,88 @@
-import React, { useContext, useState } from 'react';
-import { Note, NotesContext } from '../contexts/NotesContext';  // Importamos el tipo de la nota
-import './EditNoteModal.css'; // Importar el archivo CSS
+import React, { useState, useContext } from 'react';
+import { NotesContext } from '../contexts/NotesContext'; // Asegúrate de la ruta correcta
+import '../styles,css/AddNoteModal.css'; // Importar el archivo CSS
 
-// Definimos las props del modal
-interface EditNoteModalProps {
-  note: Note;
+interface AddNoteProps {
+  isOpen: boolean;
   onClose: () => void;
 }
 
-const EditNoteModal: React.FC<EditNoteModalProps> = ({ note, onClose }) => {
+const AddNoteModal: React.FC<AddNoteProps> = ({ isOpen, onClose }) => {
   const { dispatch } = useContext(NotesContext);
-  const [title, setTitle] = useState(note.title);  // Estado local para el título
-  const [content, setContent] = useState(note.content);  // Estado local para el contenido
-  const [category] = useState(note.category || ''); // Mantener la categoría original si existe
-  const [tags] = useState<string[]>(note.tags || []); // Mantener las etiquetas originales si existen
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [category, setCategory] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
+  const [error, setError] = useState('');
 
-  // Función que se ejecuta cuando el usuario hace clic en "Guardar"
+  // Función para obtener un color pastel aleatorio
+  const getRandomPastelColor = () => {
+    const pastelColors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF'];
+    return pastelColors[Math.floor(Math.random() * pastelColors.length)];
+  };
+
   const handleSave = () => {
-    if (title && content) {
-      dispatch({
-        type: 'ADD_NOTE',
-        payload: { 
-          id: note.id, // Mantenemos el ID original
-          title, 
-          content, 
-          category, 
-          tags,
-          color: note.color // Mantener el color original de la nota
-        }
-      });
-      onClose();
+    if (!title.trim() || !content.trim()) {
+      setError('El título y el contenido son obligatorios.');
+      return;
     }
+
+    setError(''); // Limpiar el error si todo es válido
+
+    dispatch({
+      type: 'ADD_NOTE',
+      payload: {
+        id: Date.now(),
+        title,
+        content,
+        category,
+        tags,
+        color: getRandomPastelColor(), // Asignar un color aleatorio
+        position: { x: 0, y: 0 } // Asignar una posición inicial predeterminada
+      }
+    });
+    onClose();
+  };
+
+  const handleTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const tagString = e.target.value;
+    const tagArray = tagString.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
+    setTags(tagArray);
   };
 
   return (
-    <div className="modal-background">
-      <div className="modal-content">
-        <h2>Editar Nota</h2>
-        <input 
-          type="text" 
-          value={title} 
-          onChange={(e) => setTitle(e.target.value)} 
-          placeholder="Título de la nota" 
-          className="input"
-        />
-        <textarea 
-          value={content} 
-          onChange={(e) => setContent(e.target.value)} 
-          placeholder="Contenido de la nota" 
-          className="textarea"
-        />
-        <div className="button-group">
-          <button onClick={handleSave} className="button">Guardar</button>
-          <button onClick={onClose} className="button cancel">Cancelar</button>
-        </div>
-      </div>
+    <div className={`modal ${isOpen ? 'open' : ''}`}>
+      {error && <p className="error-message">{error}</p>}
+      <h2>Agregar Nota</h2>
+      <input
+        type="text"
+        placeholder="Título"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
+      <textarea
+        placeholder="Contenido"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        required
+      />
+      <input
+        type="text"
+        placeholder="Categoría (Opcional)"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Etiquetas (Opcional, separadas por comas)"
+        value={tags.join(', ')}
+        onChange={handleTagInput}
+      />
+      <button onClick={handleSave}>Guardar</button>
+      <button onClick={onClose}>Cancelar</button>
     </div>
   );
 };
 
-export default EditNoteModal;
+export default AddNoteModal;

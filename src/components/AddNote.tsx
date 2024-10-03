@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { NotesContext } from '../contexts/NotesContext'; // Asegúrate de la ruta correcta
-import '../styles.css/AddNote.css'; // Importar el archivo CSS
+import '../styles/AddNote.css'; // Importar el archivo CSS
 
 interface AddNoteProps {
   isOpen: boolean;
@@ -8,7 +8,7 @@ interface AddNoteProps {
 }
 
 const AddNote: React.FC<AddNoteProps> = ({ isOpen, onClose }) => {
-  const { dispatch } = useContext(NotesContext);
+  const { notes, dispatch } = useContext(NotesContext); // Acceder a `notes` desde el contexto
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('');
@@ -29,6 +29,9 @@ const AddNote: React.FC<AddNoteProps> = ({ isOpen, onClose }) => {
 
     setError(''); // Limpiar el error si todo es válido
 
+    // Asignar una posición inicial para la nueva nota
+    const position = { x: 0, y: notes.length * 220 }; // Ajustar las posiciones según sea necesario
+
     dispatch({
       type: 'ADD_NOTE',
       payload: { 
@@ -37,7 +40,8 @@ const AddNote: React.FC<AddNoteProps> = ({ isOpen, onClose }) => {
         content, 
         category, 
         tags,
-        color: getRandomPastelColor() // Asignar un color aleatorio a la nota
+        color: getRandomPastelColor(), // Asignar un color aleatorio a la nota
+        position // Añadir la posición al payload
       }
     });
     onClose();

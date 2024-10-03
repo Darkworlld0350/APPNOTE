@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Note } from '../contexts/NotesContext';
 import { Rnd } from 'react-rnd';
-import '../styles.css/NoteComponent.css'; // Importar el archivo CSS
+import '../styles/Note.css'; // Importar el archivo CSS
 
 interface NoteProps {
   note: Note;
@@ -23,12 +23,12 @@ const NoteComponent: React.FC<NoteProps> = ({ note, onEdit, onDelete }) => {
     >
       <div
         className="note-container"
-        style={{ backgroundColor: note.color || '#fff' }} // Solo el color es dinámico
+        style={{ backgroundColor: note.color || '#fff' }} // El color se controla aquí
       >
         <h3 className="note-title">{note.title}</h3>
         <p className="note-content">{note.content}</p>
-        {note.category && <p>Categoría: {note.category}</p>}
-        {note.tags && <p>Etiquetas: {note.tags.join(', ')}</p>}
+        {note.category && <p className="note-category">Categoría: {note.category}</p>}
+        {note.tags && <p className="note-tags">Etiquetas: {note.tags.join(', ')}</p>}
         <div className="note-buttons">
           <button onClick={onEdit}>Editar</button>
           <button onClick={onDelete}>Eliminar</button>
