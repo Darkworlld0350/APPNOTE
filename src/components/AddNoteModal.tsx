@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { NotesContext } from '../contexts/NotesContext'; // Asegúrate de la ruta correcta
-import '../styles/AddNoteModal.css'; // Importar el archivo CSS
+import { NotesContext } from '../contexts/NotesContext'; 
+import '../styles/AddNoteModal.css'; 
 
 interface AddNoteProps {
   isOpen: boolean;
@@ -37,8 +37,8 @@ const AddNoteModal: React.FC<AddNoteProps> = ({ isOpen, onClose }) => {
         content,
         category,
         tags,
-        color: getRandomPastelColor(), // Asignar un color aleatorio
-        position: { x: 0, y: 0 } // Asignar una posición inicial predeterminada
+        color: getRandomPastelColor(), 
+        position: { x: 0, y: 0 } 
       }
     });
     onClose();

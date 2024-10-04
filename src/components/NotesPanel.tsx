@@ -3,8 +3,8 @@ import { NotesContext, Note } from '../contexts/NotesContext';
 import AddNote from './AddNote';
 import EditNote from './EditNote';
 import NoteComponent from './Note';
-import '../styles/NotesPanel.css'; // Importar los estilos
-import '../styles/Button.css'; // Importar los estilos de los botones
+import '../styles/NotesPanel.css'; 
+import '../styles/Button.css'; 
 import { AnimatePresence } from 'framer-motion';
 
 const NotesPanel: React.FC = () => {
@@ -19,11 +19,8 @@ const NotesPanel: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar esta nota?');
-    if (confirmDelete) {
-      dispatch({ type: 'DELETE_NOTE', payload: id });
-    }
-  };
+    dispatch({ type: 'DELETE_NOTE', payload: id });
+  };  
 
   return (
     <div className="panel-container">

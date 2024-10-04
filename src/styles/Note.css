@@ -1,4 +1,19 @@
 /* Estilo general para la nota */
+.note-container {
+  position: relative;
+  padding: 20px;
+  background-color: var(--note-background, #fff);
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+
+/* Cambia el estilo de la nota al hacer hover */
+.note-container:hover {
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+}
 
 /* Estilo para los botones */
 .note-buttons {
@@ -7,6 +22,11 @@
   right: 10px;
   display: none;
   gap: 5px;
+}
+
+/* Mostrar los botones al hacer hover en la nota */
+.note-container:hover .note-buttons {
+  display: flex;
 }
 
 /* Estilo de los íconos de los botones */

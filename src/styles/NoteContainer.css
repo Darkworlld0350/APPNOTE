@@ -1,25 +1,23 @@
 /* NoteContainer.css */
 .note-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0; /* Elimina el espacio entre las notas */
-    overflow-x: auto; /* Permite desplazamiento horizontal si hay muchas notas */
-    padding: 20px;
-    height: 300px; /* Ajustar la altura del contenedor según sea necesario */
-    position: relative;
-  }
-  
-  /* Aplicar la superposición con nth-child */
-  .note-wrapper {
-    position: relative;
-    margin-left: -70px; /* Ajustar este valor para controlar la superposición */
-    transition: transform 0.3s ease;
-    z-index: 0;
-  }
-  
-  .note-wrapper:hover {
-    transform: translateY(-10px); /* Efecto de levantar la nota al pasar el cursor */
-    z-index: 10; /* Trae la nota al frente */
-  }
-  
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0; 
+  overflow-x: auto; 
+  padding: 20px;
+  height: 300px; 
+  position: relative;
+}
+
+.note-wrapper {
+  position: relative;
+  margin-left: -70px; 
+  transition: transform 0.3s ease;
+  z-index: 0;
+}
+
+.note-wrapper:hover {
+  transform: translateY(-10px); 
+  z-index: 10;
+}

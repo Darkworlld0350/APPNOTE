@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Note } from '../contexts/NotesContext';
 import { Rnd } from 'react-rnd';
-import '../styles/Note.css'; // Importar los estilos
+import '../styles/Note.css'; 
 
 interface NoteProps {
   note: Note;

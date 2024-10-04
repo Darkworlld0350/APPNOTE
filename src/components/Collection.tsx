@@ -1,7 +1,7 @@
 import React from 'react';
-import '../styles/Collection.css'; // Asegúrate de importar el archivo CSS para estilos
 import { Note } from '../contexts/NotesContext';
-import NoteComponents from './Note'; // Importar el componente de nota
+import NoteComponents from './Note';
+import './Collection.css';
 
 interface CollectionProps {
   notes: Note[];

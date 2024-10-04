@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { NotesContext } from '../contexts/NotesContext';
-import '../styles/AddNote.css'; // Importar el archivo CSS separado
+import '../styles/AddNote.css'; 
 
 interface AddNoteProps {
   isOpen: boolean;
@@ -39,8 +39,8 @@ const AddNote: React.FC<AddNoteProps> = ({ isOpen, onClose }) => {
         content, 
         category, 
         tags, 
-        color, // Añadir el color pastel a la nota
-        position: { x: 0, y: 0 } // Asignar posición inicial para la nota
+        color, 
+        position: { x: 0, y: 0 } 
       },
     });
     onClose();

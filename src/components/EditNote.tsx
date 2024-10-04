@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { NotesContext, Note } from '../contexts/NotesContext';
-import '../styles/EditNoteModal.css'; // Importar los estilos
+import '../styles/EditNoteModal.css'; 
 
 interface EditNoteModalProps {
   isOpen: boolean;

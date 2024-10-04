@@ -1,26 +1,26 @@
   /* Estilo para el contenedor del AppBar */
 .app-bar-container {
-  background-color: #a5d8ff; /* Color pastel */
+  background-color: #a5d8ff; 
   display: flex;
-  flex-direction: column; /* Alinear los elementos verticalmente */
-  justify-content: center; /* Centrar el contenido horizontalmente */
-  align-items: center; /* Centrar el contenido verticalmente */
-  width: 100%; /* Hacer que el contenedor ocupe todo el ancho */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  width: 100%; 
   padding: 20px;
-  background-color: #a5d8ff; /* Color pastel */
+  background-color: #a5d8ff; 
   border-radius: 8px;
-  box-sizing: border-box; /* Incluir padding y bordes en el tamaño total */
-  margin: 0 auto; /* Centrar el contenedor */
+  box-sizing: border-box; 
+  margin: 0 auto; 
 }
 
 /* Estilo para el título */
 .app-bar-title {
-  font-weight: 700; /* Negrita para el título */
+  font-weight: 700;
   margin: 0;
 }
 
 /* Estilo para el subtítulo */
 .app-bar-subtitle {
-  font-weight: 400; /* Regular para el subtítulo */
+  font-weight: 400; 
   margin: 0;
 }
