@@ -1,46 +1,28 @@
-/* Contenedor del panel principal de notas */
+/* NotesPanel.css */
 .panel-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 16fr)); /* Crear columnas flexibles */
-    gap: 20px; /* Espacio entre las notas */
-    padding: 20px;
-  }
-  
-/* Estilo para cada nota */
-.note-container {
-  background-color: #ffebb7;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease;
+  padding: 20px;
 }
 
-/* Hover efecto para las notas */
-.note-container:hover {
-  transform: translateY(-5px);
-}
-
-.button-container {
+.top-buttons {
   display: flex;
-  justify-content: flex-end; /* Mueve el contenido a la derecha */
+  justify-content: flex-end;
   margin-bottom: 20px;
-} 
-
-/* Contenedor para el botón */
-.add-note-container {
-  display: flex;
-  justify-content: flex-end; /* Mueve el botón a la derecha */
-  margin-right: -760%; /* Ajusta el margen derecho según sea necesario */
-  margin-top: 20px; /* Espacio debajo del AppBar */
 }
 
-/* Botón de agregar nota */
-.add-note-button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  max-height: 50px;
+.note-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.note-wrapper {
+  position: relative;
+}
+
+.note-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
 }

@@ -1,22 +1,94 @@
-/* Contenedor del panel principal de notas */
-.panel-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  /* Estilo para cada nota */
-  .note-container {
-    background-color: #ffebb7;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease;
-  }
-  
-  /* Hover efecto para las notas */
-  .note-container:hover {
-    transform: translateY(-5px);
-  }
-  
+/* Note Modal */
+.note-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  z-index: 1000;
+}
+
+.note-modal.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Modal content */
+.note-modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Title */
+.note-modal-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Input group */
+.note-modal-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Inputs */
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Button group */
+.note-modal-button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Buttons */
+.note-modal-button-save,
+.note-modal-button-cancel {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  flex: 1;
+}
+
+.note-modal-button-save {
+  background-color: #4caf50;
+  color: white;
+}
+
+.note-modal-button-save:hover {
+  background-color: #45a049;
+}
+
+.note-modal-button-cancel {
+  background-color: #f44336;
+  color: white;
+}
+
+.note-modal-button-cancel:hover {
+  background-color: #d32f2f;
+}

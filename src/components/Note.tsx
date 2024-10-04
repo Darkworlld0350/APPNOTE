@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Note } from '../contexts/NotesContext';
 import { Rnd } from 'react-rnd';
-import '../styles/Note.css'; // Importar el archivo CSS
+import '../styles/Note.css'; // Importar los estilos
 
 interface NoteProps {
   note: Note;
@@ -10,29 +10,32 @@ interface NoteProps {
 }
 
 const NoteComponent: React.FC<NoteProps> = ({ note, onEdit, onDelete }) => {
-  // Estado para la posición inicial de la nota
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   return (
     <Rnd
       size={{ width: 200, height: 'auto' }}
-      position={position}
+      default={{ x: position.x, y: position.y, width: 200, height: 200 }}
       onDragStop={(_e, d) => {
-        setPosition({ x: d.x, y: d.y }); // Guardar la posición al soltar
+        setPosition({ x: d.x, y: d.y });
       }}
     >
-      <div
-        className="note-container"
-        style={{ backgroundColor: note.color || '#fff' }} // El color se controla aquí
-      >
+      <div className="note-container" style={{ backgroundColor: note.color || '#fff' }}>
+        {/* Botones de edición y eliminación */}
+        <div className="note-buttons">
+          <div className="button-icon" onClick={onEdit}>
+            ✎
+            <span className="tooltip">Editar</span>
+          </div>
+          <div className="button-icon" onClick={onDelete}>
+            ✖
+            <span className="tooltip">Eliminar</span>
+          </div>
+        </div>
         <h3 className="note-title">{note.title}</h3>
         <p className="note-content">{note.content}</p>
-        {note.category && <p className="note-category">Categoría: {note.category}</p>}
-        {note.tags && <p className="note-tags">Etiquetas: {note.tags.join(', ')}</p>}
-        <div className="note-buttons">
-          <button onClick={onEdit}>Editar</button>
-          <button onClick={onDelete}>Eliminar</button>
-        </div>
+        {note.category && <p>Categoría: {note.category}</p>}
+        {note.tags && <p>Etiquetas: {note.tags.join(', ')}</p>}
       </div>
     </Rnd>
   );

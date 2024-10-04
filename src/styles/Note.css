@@ -1,41 +1,50 @@
-.note-container {
-  width: 100%; /* Dejar que Rnd controle el tamaño */
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative; /* Para que los botones se ubiquen correctamente */
-  transition: background-color 0.3s ease; /* Animación para el cambio de color */
-}
+/* Estilo general para la nota */
 
-.note-title {
-  font-size: 1.2em;
-  margin-bottom: 0.5em;
-}
-
-.note-content {
-  margin-bottom: 0.5em;
-}
-
-.note-category,
-.note-tags {
-  margin-bottom: 0.5em;
-}
-
+/* Estilo para los botones */
 .note-buttons {
-  display: flex;
-  gap: 0.5em;
   position: absolute;
   top: 10px;
   right: 10px;
+  display: none;
+  gap: 5px;
 }
 
-.note-buttons button {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
+/* Estilo de los íconos de los botones */
+.button-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-.note-buttons button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+/* Cambiar color y aplicar sombra al hacer hover en los botones */
+.button-icon:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.1);
+}
+
+/* Tooltip */
+.tooltip {
+  visibility: hidden;
+  width: 80px;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  top: -35px;
+  right: 0;
+}
+
+/* Mostrar el tooltip al hacer hover en el botón */
+.button-icon:hover .tooltip {
+  visibility: visible;
 }

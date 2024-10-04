@@ -1,26 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
-import styled from 'styled-components';
 import { NotesContext, Note } from '../contexts/NotesContext';
+import '../styles/EditNoteModal.css'; // Importar los estilos
 
-interface EditNoteProps {
+interface EditNoteModalProps {
   isOpen: boolean;
   onClose: () => void;
-  note: Note; // La nota que se va a editar
+  note: Note;
 }
 
-const Modal = styled.div<{ isOpen: boolean }>`
-  display: ${(props) => (props.isOpen ? 'block' : 'none')};
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-`;
-
-const EditNote: React.FC<EditNoteProps> = ({ isOpen, onClose, note }) => {
+const EditNoteModal: React.FC<EditNoteModalProps> = ({ isOpen, onClose, note }) => {
   const { dispatch } = useContext(NotesContext);
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content);
@@ -46,45 +34,48 @@ const EditNote: React.FC<EditNoteProps> = ({ isOpen, onClose, note }) => {
 
   const handleTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const tagString = e.target.value;
-    const tagArray = tagString
-      .split(',')
-      .map((tag) => tag.trim())
-      .filter((tag) => tag !== '');
+    const tagArray = tagString.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
     setTags(tagArray);
   };
 
   return (
-    <Modal isOpen={isOpen}>
-      <h2>Editar Nota</h2>
-      <input
-        type="text"
-        placeholder="Título"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
-      />
-      <textarea
-        placeholder="Contenido"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        required
-      />
-      <input
-        type="text"
-        placeholder="Categoría (Opcional)"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Etiquetas (Opcional, separadas por comas)"
-        value={tags.join(', ')}
-        onChange={handleTagInput}
-      />
-      <button onClick={handleSave}>Guardar</button>
-      <button onClick={onClose}>Cancelar</button>
-    </Modal>
+    <div className={`note-modal ${isOpen ? 'open' : ''}`}>
+      <div className="note-modal-content">
+        <h2 className="note-modal-title">Editar Nota</h2>
+        <div className="note-modal-input-group">
+          <input
+            type="text"
+            placeholder="Título"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+          <textarea
+            placeholder="Contenido"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Categoría (Opcional)"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Etiquetas (Opcional, separadas por comas)"
+            value={tags.join(', ')}
+            onChange={handleTagInput}
+          />
+        </div>
+        <div className="note-modal-button-group">
+          <button className="note-modal-button-save" onClick={handleSave}>Guardar</button>
+          <button className="note-modal-button-cancel" onClick={onClose}>Cancelar</button>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default EditNote;
+export default EditNoteModal;

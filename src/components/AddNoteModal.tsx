@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { NotesContext } from '../contexts/NotesContext'; // Asegúrate de la ruta correcta
-import '../styles,css/AddNoteModal.css'; // Importar el archivo CSS
+import '../styles/AddNoteModal.css'; // Importar el archivo CSS
 
 interface AddNoteProps {
   isOpen: boolean;

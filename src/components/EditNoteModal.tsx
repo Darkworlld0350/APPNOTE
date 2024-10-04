@@ -1,42 +1,35 @@
-import React, { useState, useContext } from 'react';
-import { Note, NotesContext } from '../contexts/NotesContext'; // Asegúrate de la ruta correcta
-import '../styles/EditNoteModal.css'; // Importar el archivo CSS
+import React, { useState, useContext, useEffect } from 'react';
+import { NotesContext, Note } from '../contexts/NotesContext';
+import '../styles/EditNoteModal.css'; // Importar los estilos
 
 interface EditNoteModalProps {
-  note: Note;
+  isOpen: boolean;
   onClose: () => void;
+  note: Note;
 }
 
-const EditNoteModal: React.FC<EditNoteModalProps> = ({ note, onClose }) => {
+const EditNoteModal: React.FC<EditNoteModalProps> = ({ isOpen, onClose, note }) => {
   const { dispatch } = useContext(NotesContext);
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content);
   const [category, setCategory] = useState(note.category || '');
   const [tags, setTags] = useState<string[]>(note.tags || []);
-  const [error, setError] = useState('');
+
+  useEffect(() => {
+    setTitle(note.title);
+    setContent(note.content);
+    setCategory(note.category || '');
+    setTags(note.tags || []);
+  }, [note]);
 
   const handleSave = () => {
-    if (!title.trim() || !content.trim()) {
-      setError('El título y el contenido son obligatorios.');
-      return;
+    if (title && content) {
+      dispatch({
+        type: 'EDIT_NOTE',
+        payload: { ...note, title, content, category, tags },
+      });
+      onClose();
     }
-
-    setError(''); // Limpiar el error si todo es válido
-
-    // Mantener la posición y el color actuales de la nota
-    dispatch({
-      type: 'EDIT_NOTE',
-      payload: {
-        id: note.id,
-        title,
-        content,
-        category,
-        tags,
-        color: note.color, // Mantener el color existente
-        position: note.position // Incluir la posición existente
-      }
-    });
-    onClose();
   };
 
   const handleTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,36 +39,41 @@ const EditNoteModal: React.FC<EditNoteModalProps> = ({ note, onClose }) => {
   };
 
   return (
-    <div className="modal">
-      {error && <p className="error-message">{error}</p>}
-      <h2>Editar Nota</h2>
-      <input
-        type="text"
-        placeholder="Título"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
-      />
-      <textarea
-        placeholder="Contenido"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        required
-      />
-      <input
-        type="text"
-        placeholder="Categoría (Opcional)"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Etiquetas (Opcional, separadas por comas)"
-        value={tags.join(', ')}
-        onChange={handleTagInput}
-      />
-      <button onClick={handleSave}>Guardar</button>
-      <button onClick={onClose}>Cancelar</button>
+    <div className={`modal ${isOpen ? 'open' : ''}`}>
+      <div className="modal-content">
+        <h2 className="modal-title">Editar Nota</h2>
+        <div className="modal-input-group">
+          <input
+            type="text"
+            placeholder="Título"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+          <textarea
+            placeholder="Contenido"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Categoría (Opcional)"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Etiquetas (Opcional, separadas por comas)"
+            value={tags.join(', ')}
+            onChange={handleTagInput}
+          />
+        </div>
+        <div className="button-group">
+          <button className="button-save" onClick={handleSave}>Guardar</button>
+          <button className="button-cancel" onClick={onClose}>Cancelar</button>
+        </div>
+      </div>
     </div>
   );
 };
